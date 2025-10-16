@@ -1,14 +1,28 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Formulario;
 
+import javax.swing.JOptionPane;
+import Conexion.Conexion;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 /**
  *
  * @author TDFM
  */
 public class Empleados extends javax.swing.JFrame {
+    Conexion conexionPostgres = new Conexion();
+    Connection con;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Empleados.class.getName());
 
@@ -17,6 +31,11 @@ public class Empleados extends javax.swing.JFrame {
      */
     public Empleados() {
         initComponents();
+        try{
+            con = conexionPostgres.getConexion();
+        }catch (SQLException e){
+                   e.getMessage();
+      }
     }
 
     /**
@@ -28,17 +47,95 @@ public class Empleados extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        LBLidProveedor = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        LBLnit = new javax.swing.JLabel();
+        LBLid = new javax.swing.JLabel();
+        LBLnombre = new javax.swing.JLabel();
+        LBLapellido = new javax.swing.JLabel();
+        LBLcargo = new javax.swing.JLabel();
+        cbCargo = new javax.swing.JComboBox<>();
+        LBLtelefono = new javax.swing.JLabel();
+        LBLdireccion = new javax.swing.JLabel();
+        LBLestado = new javax.swing.JLabel();
+        cbEstado = new javax.swing.JComboBox<>();
+        LBLfechaIngreso = new javax.swing.JLabel();
+        LBLsalario = new javax.swing.JLabel();
+        LBLemail = new javax.swing.JLabel();
+        txtId = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtApellido = new javax.swing.JTextField();
+        txtTelefono = new javax.swing.JTextField();
+        txtDireccion = new javax.swing.JTextField();
+        txtFechaIngreso = new javax.swing.JTextField();
+        txtSalario = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
+        BTNingresar = new javax.swing.JButton();
+        BTNmodificar = new javax.swing.JButton();
+        BTNconsultar = new javax.swing.JButton();
+        BTNeliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LBLidProveedor.setText("iD Proveedor");
+        LBLid.setText("ID");
 
-        jLabel1.setText("Nombre");
+        LBLnombre.setText("Nombre");
 
-        LBLnit.setText("NIT");
+        LBLapellido.setText("Apellido");
+
+        LBLcargo.setText("Cargo");
+
+        cbCargo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Mesero", "Cajero" }));
+        cbCargo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbCargoActionPerformed(evt);
+            }
+        });
+
+        LBLtelefono.setText("Telefono");
+
+        LBLdireccion.setText("Direccion");
+
+        LBLestado.setText("Estado");
+
+        cbEstado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Activo", "Inactivo" }));
+
+        LBLfechaIngreso.setText("Fecha de ingreso");
+
+        LBLsalario.setText("Salario");
+
+        LBLemail.setText("Email");
+
+        txtId.setText(" ");
+
+        txtNombre.setText(" ");
+        txtNombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNombreActionPerformed(evt);
+            }
+        });
+
+        txtApellido.setText(" ");
+
+        txtTelefono.setText(" ");
+
+        txtDireccion.setText(" ");
+
+        txtFechaIngreso.setText(" ");
+
+        txtSalario.setText(" ");
+
+        txtEmail.setText(" ");
+
+        BTNingresar.setText("Ingresar");
+        BTNingresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNingresarActionPerformed(evt);
+            }
+        });
+
+        BTNmodificar.setText("Modificar");
+
+        BTNconsultar.setText("Consultar");
+
+        BTNeliminar.setText("Eliminar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -47,25 +144,152 @@ public class Empleados extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LBLidProveedor)
-                    .addComponent(jLabel1)
-                    .addComponent(LBLnit))
-                .addContainerGap(326, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LBLapellido)
+                            .addComponent(LBLtelefono)
+                            .addComponent(LBLsalario)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(LBLid)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
+                                .addComponent(LBLnombre, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(LBLdireccion))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(LBLfechaIngreso)
+                            .addComponent(LBLemail)
+                            .addComponent(LBLcargo)
+                            .addComponent(LBLestado))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtDireccion, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
+                            .addComponent(txtTelefono)
+                            .addComponent(txtApellido)
+                            .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtNombre)
+                            .addComponent(txtFechaIngreso)
+                            .addComponent(txtSalario)
+                            .addComponent(txtEmail))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BTNingresar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BTNmodificar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BTNconsultar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(BTNeliminar))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(LBLidProveedor)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(LBLnit)
-                .addContainerGap(199, Short.MAX_VALUE))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLid, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLnombre)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLapellido)
+                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLcargo)
+                    .addComponent(cbCargo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLtelefono)
+                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLdireccion)
+                    .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLestado)
+                    .addComponent(cbEstado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLfechaIngreso)
+                    .addComponent(txtFechaIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLsalario)
+                    .addComponent(txtSalario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLemail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BTNingresar)
+                    .addComponent(BTNmodificar)
+                    .addComponent(BTNconsultar)
+                    .addComponent(BTNeliminar)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cbCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbCargoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbCargoActionPerformed
+
+    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNombreActionPerformed
+
+    private void BTNingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNingresarActionPerformed
+        // TODO add your handling code here:
+        try{
+            String nombre = txtNombre.getText();
+            String apellido = txtApellido.getText();
+            String cargo = (String) cbCargo.getSelectedItem();
+            String telefono = txtTelefono.getText();            
+            String direccion = txtDireccion.getText();            
+            String estadoTxt = (String) cbEstado.getSelectedItem();
+            String fechaTxt = txtFechaIngreso.getText().trim();                        
+            String salarioTxt = txtSalario.getText();
+            String email = txtEmail.getText();
+            //Convertir el JtextField a double (numérico)
+            double salario = Double.parseDouble(salarioTxt.trim()); 
+            //Darle formato a la fecha
+            DateTimeFormatter formato_fecha = DateTimeFormatter.ofPattern("[dd/MM/yyyy][dd-MM-yyyy]");
+            LocalDate fecha_ingreso = LocalDate.parse(fechaTxt, formato_fecha);
+            //Convertir el ComboBox a booleano (o sea de 2 estados)
+            boolean estado = estadoTxt.equalsIgnoreCase("Activo");
+
+            String qry = "INSERT INTO marinasrestaurant.empleados(nombre, apellido, cargo, telefono, direccion, estado, fecha_ingreso, salario, email)"
+                    +" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            PreparedStatement ps = con.prepareStatement(qry);
+            ps.setString(1, nombre);
+            ps.setString(2, apellido);
+            ps.setString(3, cargo);
+            ps.setString(4, telefono);
+            ps.setString(5, direccion);
+            ps.setBoolean(6, estado);
+            ps.setObject(7, fecha_ingreso);            
+            ps.setDouble(8, salario);
+            ps.setString(9, email);
+
+
+            int filasInsertadas = ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Total de registros insertados"+filasInsertadas);
+            ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }        
+    }//GEN-LAST:event_BTNingresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -93,8 +317,29 @@ public class Empleados extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel LBLidProveedor;
-    private javax.swing.JLabel LBLnit;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton BTNconsultar;
+    private javax.swing.JButton BTNeliminar;
+    private javax.swing.JButton BTNingresar;
+    private javax.swing.JButton BTNmodificar;
+    private javax.swing.JLabel LBLapellido;
+    private javax.swing.JLabel LBLcargo;
+    private javax.swing.JLabel LBLdireccion;
+    private javax.swing.JLabel LBLemail;
+    private javax.swing.JLabel LBLestado;
+    private javax.swing.JLabel LBLfechaIngreso;
+    private javax.swing.JLabel LBLid;
+    private javax.swing.JLabel LBLnombre;
+    private javax.swing.JLabel LBLsalario;
+    private javax.swing.JLabel LBLtelefono;
+    private javax.swing.JComboBox<String> cbCargo;
+    private javax.swing.JComboBox<String> cbEstado;
+    private javax.swing.JTextField txtApellido;
+    private javax.swing.JTextField txtDireccion;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JTextField txtFechaIngreso;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtSalario;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
