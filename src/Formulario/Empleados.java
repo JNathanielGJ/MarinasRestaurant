@@ -134,8 +134,18 @@ public class Empleados extends javax.swing.JFrame {
         BTNmodificar.setText("Modificar");
 
         BTNconsultar.setText("Consultar");
+        BTNconsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNconsultarActionPerformed(evt);
+            }
+        });
 
         BTNeliminar.setText("Eliminar");
+        BTNeliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNeliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -280,7 +290,6 @@ public class Empleados extends javax.swing.JFrame {
             ps.setDouble(8, salario);
             ps.setString(9, email);
 
-
             int filasInsertadas = ps.executeUpdate();
 
             JOptionPane.showMessageDialog(null, "Total de registros insertados"+filasInsertadas);
@@ -290,6 +299,54 @@ public class Empleados extends javax.swing.JFrame {
                    e.getMessage();
         }        
     }//GEN-LAST:event_BTNingresarActionPerformed
+
+    private void BTNconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNconsultarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nombre = txtNombre.getText();
+            String qry = "SELECT * FROM marinasrestaurant.empleados WHERE nombre = ?";
+
+            try (PreparedStatement ps = con.prepareStatement(qry)) {
+                ps.setString(1, nombre);
+                
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String apellido = rs.getString("apellido");
+                        String cargo = rs.getString("cargo");
+                        String telefono = rs.getString("telefono");
+                        String direccion = rs.getString("direccion");
+                        String estado = rs.getString("estado");
+                        String fecha_ingreso = rs.getString("fecha_ingreso");
+                        String salario = rs.getString("salario");
+                        String email = rs.getString("email");
+                        String id = rs.getString("empleado_id");
+                        txtApellido.setText(apellido);
+                        cbCargo.setSelectedItem(cargo);
+                        txtTelefono.setText(telefono);
+                        txtDireccion.setText(direccion);
+                        cbEstado.setSelectedItem(estado);
+                        txtFechaIngreso.setText(fecha_ingreso);
+                        txtSalario.setText(salario);
+                        txtEmail.setText(email);
+                        txtId.setText(id);
+            
+            JOptionPane.showMessageDialog(this, "Registro encontrado");
+            JOptionPane.showMessageDialog(this, nombre);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el empleado " + nombre);
+                }
+            }
+        }
+
+        } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }        
+    }//GEN-LAST:event_BTNconsultarActionPerformed
+
+    private void BTNeliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNeliminarActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_BTNeliminarActionPerformed
 
     /**
      * @param args the command line arguments
