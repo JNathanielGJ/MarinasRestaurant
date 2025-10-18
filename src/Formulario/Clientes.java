@@ -55,7 +55,7 @@ public class Clientes extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LBLidCliente.setText("ID Cliente");
+        LBLidCliente.setText("iD");
 
         LBLnombre.setText("Nombre");
 
@@ -92,6 +92,11 @@ public class Clientes extends javax.swing.JFrame {
         });
 
         BTNeliminar.setText("Eliminar");
+        BTNeliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNeliminarActionPerformed(evt);
+            }
+        });
 
         BTNconsultar.setText("Consultar");
         BTNconsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -118,13 +123,14 @@ public class Clientes extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(LBLidCliente)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                    .addComponent(LBLidCliente)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtIdCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE))
                                 .addComponent(LBLnombre))
                             .addGap(18, 18, 18)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtIdCliente, javax.swing.GroupLayout.DEFAULT_SIZE, 201, Short.MAX_VALUE)
-                                .addComponent(txtNombre))))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel1)
@@ -238,27 +244,28 @@ public class Clientes extends javax.swing.JFrame {
 
     private void BTNconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNconsultarActionPerformed
         try {
-            int id = Integer.parseInt(txtIdCliente.getText().trim());
-            String qry = "SELECT * FROM marinasrestaurant.clientes WHERE cliente_id = ?";
+            String nombre = txtNombre.getText().trim();
+            
+            String qry = "SELECT * FROM marinasrestaurant.clientes WHERE LOWER(nombre) ILIKE LOWER(?)";
 
             try (PreparedStatement ps = con.prepareStatement(qry)) {
-                ps.setInt(1, id);
+                ps.setString(1, "%" + nombre + "%");
                 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        String nombre = rs.getString("nombre");
                         String telefono = rs.getString("telefono");
                         String correo = rs.getString("correo");
                         String direccion = rs.getString("direccion");
-                        txtNombre.setText(nombre);
+                        String id = rs.getString("cliente_id");
                         txtTelefono.setText(telefono);
                         txtCorreo.setText(correo);
                         txtDireccion.setText(direccion);
+                        txtIdCliente.setText(id);
             
             JOptionPane.showMessageDialog(this, "Registro encontrado");
             JOptionPane.showMessageDialog(this, nombre);
         } else {
-            JOptionPane.showMessageDialog(null, "No se encontró el cliente con ID " + id);
+            JOptionPane.showMessageDialog(null, "No se encontró el cliente " + nombre);
                 }
             }
         }
@@ -267,6 +274,31 @@ public class Clientes extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         }
     }//GEN-LAST:event_BTNconsultarActionPerformed
+
+    private void BTNeliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNeliminarActionPerformed
+        // TODO add your handling code here:
+    try{    
+        String nombre = txtNombre.getText().trim();
+        
+        String qry = "DELETE FROM marinasrestaurant.clientes WHERE LOWER(nombre) ILIKE LOWER(?)";
+
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, "%" + nombre + "%");
+
+        int filasActualizadas = ps.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+            } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un empleado de nombre " + nombre);
+            }
+        
+        ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }
+    }//GEN-LAST:event_BTNeliminarActionPerformed
 
     /**
      * @param args the command line arguments

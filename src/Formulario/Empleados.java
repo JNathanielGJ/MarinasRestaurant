@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.*;
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -119,6 +120,14 @@ public class Empleados extends javax.swing.JFrame {
         txtDireccion.setText(" ");
 
         txtFechaIngreso.setText(" ");
+        txtFechaIngreso.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                txtFechaIngresoMouseEntered(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                txtFechaIngresoMousePressed(evt);
+            }
+        });
 
         txtSalario.setText(" ");
 
@@ -132,6 +141,11 @@ public class Empleados extends javax.swing.JFrame {
         });
 
         BTNmodificar.setText("Modificar");
+        BTNmodificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNmodificarActionPerformed(evt);
+            }
+        });
 
         BTNconsultar.setText("Consultar");
         BTNconsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -268,13 +282,14 @@ public class Empleados extends javax.swing.JFrame {
             String fechaTxt = txtFechaIngreso.getText().trim();                        
             String salarioTxt = txtSalario.getText();
             String email = txtEmail.getText();
+            //Convertir el ComboBox a booleano (o sea de 2 estados)
+            boolean estado = estadoTxt.equalsIgnoreCase("Activo"); 
+            //Darle formato a la fecha
+            java.sql.Date fecha_ingreso = java.sql.Date.valueOf(fechaTxt);              
             //Convertir el JtextField a double (numérico)
             double salario = Double.parseDouble(salarioTxt.trim()); 
-            //Darle formato a la fecha
-            DateTimeFormatter formato_fecha = DateTimeFormatter.ofPattern("[dd/MM/yyyy][dd-MM-yyyy]");
-            LocalDate fecha_ingreso = LocalDate.parse(fechaTxt, formato_fecha);
-            //Convertir el ComboBox a booleano (o sea de 2 estados)
-            boolean estado = estadoTxt.equalsIgnoreCase("Activo");
+         
+
 
             String qry = "INSERT INTO marinasrestaurant.empleados(nombre, apellido, cargo, telefono, direccion, estado, fecha_ingreso, salario, email)"
                     +" values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -286,7 +301,7 @@ public class Empleados extends javax.swing.JFrame {
             ps.setString(4, telefono);
             ps.setString(5, direccion);
             ps.setBoolean(6, estado);
-            ps.setObject(7, fecha_ingreso);            
+            ps.setDate(7, fecha_ingreso);            
             ps.setDouble(8, salario);
             ps.setString(9, email);
 
@@ -303,11 +318,12 @@ public class Empleados extends javax.swing.JFrame {
     private void BTNconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNconsultarActionPerformed
         // TODO add your handling code here:
         try {
-            String nombre = txtNombre.getText();
-            String qry = "SELECT * FROM marinasrestaurant.empleados WHERE nombre = ?";
+            String nombre = txtNombre.getText().trim();
+            
+            String qry = "SELECT * FROM marinasrestaurant.empleados WHERE LOWER(nombre) ILIKE LOWER(?)";
 
             try (PreparedStatement ps = con.prepareStatement(qry)) {
-                ps.setString(1, nombre);
+                ps.setString(1, "%" + nombre + "%");
                 
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
@@ -345,8 +361,87 @@ public class Empleados extends javax.swing.JFrame {
 
     private void BTNeliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNeliminarActionPerformed
         // TODO add your handling code here:
+    try{    
+        String nombre = txtNombre.getText().trim();
+        
+        String qry = "DELETE FROM marinasrestaurant.empleados WHERE LOWER(nombre) ILIKE LOWER(?)";
 
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, "%" + nombre + "%");
+
+        int filasActualizadas = ps.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+            } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un empleado de nombre " + nombre);
+            }
+        
+        ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }
     }//GEN-LAST:event_BTNeliminarActionPerformed
+
+    private void BTNmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNmodificarActionPerformed
+        // TODO add your handling code here:
+        try{
+            String idempleado = txtId.getText();
+            String nombre = txtNombre.getText();
+            String apellido = txtApellido.getText();
+            String cargo = (String) cbCargo.getSelectedItem();
+            String telefono = txtTelefono.getText();            
+            String direccion = txtDireccion.getText();            
+            String estadoTxt = (String) cbEstado.getSelectedItem();
+            String fechaTxt = txtFechaIngreso.getText().trim();                        
+            String salarioTxt = txtSalario.getText();
+            String email = txtEmail.getText();
+            int id = Integer.parseInt(idempleado.trim());            
+            //Convertir el ComboBox a booleano (o sea de 2 estados)
+            boolean estado = estadoTxt.equalsIgnoreCase("Activo"); 
+            //Darle formato a la fecha
+            java.sql.Date fecha_ingreso = java.sql.Date.valueOf(fechaTxt);              
+            //Convertir el JtextField a double (numérico)
+            double salario = Double.parseDouble(salarioTxt.trim()); 
+
+            String qry = "UPDATE marinasrestaurant.empleados SET nombre=?, apellido=?, cargo=?, telefono=?, direccion=?, estado=?, fecha_ingreso=?, salario=?, email=? WHERE empleado_id=?";
+
+            PreparedStatement ps = con.prepareStatement(qry);
+            ps.setString(1, nombre);
+            ps.setString(2, apellido);
+            ps.setString(3, cargo);
+            ps.setString(4, telefono);
+            ps.setString(5, direccion);
+            ps.setBoolean(6, estado);
+            ps.setDate(7, fecha_ingreso);            
+            ps.setDouble(8, salario);
+            ps.setString(9, email);
+            ps.setInt(10, id);
+
+            int filasActualizadas = ps.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+            } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un empleado con id " + id);
+            }
+
+        ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }
+    }//GEN-LAST:event_BTNmodificarActionPerformed
+
+    private void txtFechaIngresoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFechaIngresoMouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFechaIngresoMouseEntered
+
+    private void txtFechaIngresoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_txtFechaIngresoMousePressed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(null, "Ingrese año-mes-día");        
+    }//GEN-LAST:event_txtFechaIngresoMousePressed
 
     /**
      * @param args the command line arguments

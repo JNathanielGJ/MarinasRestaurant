@@ -254,6 +254,10 @@
       <Properties>
         <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtFechaIngresoMouseEntered"/>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="txtFechaIngresoMousePressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="txtSalario">
       <Properties>
@@ -277,6 +281,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Modificar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNmodificarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTNconsultar">
       <Properties>

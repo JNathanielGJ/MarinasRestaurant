@@ -52,14 +52,14 @@ public class Proveedores extends javax.swing.JFrame {
         txtDireccion = new javax.swing.JTextField();
         txtTelefonoProveedor = new javax.swing.JTextField();
         txtTelefonoContacto = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        BTNingresar = new javax.swing.JButton();
+        BTNactualizar = new javax.swing.JButton();
+        BTNinsertar = new javax.swing.JButton();
+        BTNconsultar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LBLidProveedor.setText("ID Proveedor");
+        LBLidProveedor.setText("iD");
 
         LBLnombreProveedor.setText("Nombre Proveedor");
 
@@ -87,18 +87,23 @@ public class Proveedores extends javax.swing.JFrame {
 
         txtTelefonoContacto.setText(" ");
 
-        jButton1.setText("Ingresar");
-
-        jButton2.setText("Actualizar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        BTNingresar.setText("Ingresar");
+        BTNingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                BTNingresarActionPerformed(evt);
             }
         });
 
-        jButton3.setText("Insertar");
+        BTNactualizar.setText("Actualizar");
+        BTNactualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNactualizarActionPerformed(evt);
+            }
+        });
 
-        jButton4.setText("Consultar");
+        BTNinsertar.setText("Insertar");
+
+        BTNconsultar.setText("Consultar");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,7 +114,6 @@ public class Proveedores extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LBLidProveedor)
                             .addComponent(LBLnombreProveedor)
                             .addComponent(LBLnit)
                             .addComponent(LBLnombreContacto)
@@ -118,7 +122,6 @@ public class Proveedores extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(25, 25, 25)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtIdProveedor)
                             .addComponent(txtNombreProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                             .addComponent(txtNit)
                             .addComponent(txtNombreContacto)
@@ -126,13 +129,17 @@ public class Proveedores extends javax.swing.JFrame {
                             .addComponent(txtTelefonoProveedor)
                             .addComponent(txtTelefonoContacto)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(BTNingresar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(BTNactualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton3)
+                        .addComponent(BTNinsertar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4)))
+                        .addComponent(BTNconsultar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLidProveedor)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIdProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -168,19 +175,47 @@ public class Proveedores extends javax.swing.JFrame {
                     .addComponent(txtTelefonoContacto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(BTNingresar)
+                    .addComponent(BTNactualizar)
+                    .addComponent(BTNinsertar)
+                    .addComponent(BTNconsultar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void BTNactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNactualizarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+
+    }//GEN-LAST:event_BTNactualizarActionPerformed
+
+    private void BTNingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNingresarActionPerformed
+        // TODO add your handling code here:
+        try{
+            String nombre = txtNombreProveedor.getText();
+            String telefono = txtTelefono.getText();
+            String correo = txtCorreo.getText();
+            String direccion = txtDireccion.getText();
+
+            String qry = "INSERT INTO marinasrestaurant.clientes(nombre, telefono, correo, direccion)"
+                    +" values(?,? ,?, ?)";
+
+            PreparedStatement ps = con.prepareStatement(qry);
+            ps.setString(1, nombre);
+            ps.setString(2, telefono);
+            ps.setString(3, correo);
+            ps.setString(4, direccion);
+
+            int filasInsertadas = ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Total de registros insertados"+filasInsertadas);
+            ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }        
+    }//GEN-LAST:event_BTNingresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,15 +243,15 @@ public class Proveedores extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTNactualizar;
+    private javax.swing.JButton BTNconsultar;
+    private javax.swing.JButton BTNingresar;
+    private javax.swing.JButton BTNinsertar;
     private javax.swing.JLabel LBLdireccion;
     private javax.swing.JLabel LBLidProveedor;
     private javax.swing.JLabel LBLnit;
     private javax.swing.JLabel LBLnombreContacto;
     private javax.swing.JLabel LBLnombreProveedor;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JTextField txtDireccion;
