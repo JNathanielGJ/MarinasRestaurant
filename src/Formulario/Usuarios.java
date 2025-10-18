@@ -4,19 +4,47 @@
  */
 package Formulario;
 
+import javax.swing.JOptionPane;
+import Conexion.Conexion;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.Statement;
+import java.sql.ResultSet;
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import Formulario.Empleados;
+import Formulario.LoginAdmin;
+import Formulario.Proveedores;
+import Formulario.Clientes;
 /**
  *
  * @author TDFM
  */
 public class Usuarios extends javax.swing.JFrame {
+    Conexion conexionPostgres = new Conexion();
+    Connection con;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Usuarios.class.getName());
 
     /**
-     * Creates new form Usuarios
+     * Creates new form Login
      */
     public Usuarios() {
         initComponents();
+        try{
+            con = conexionPostgres.getConexion();
+        }catch (SQLException e){
+                   e.getMessage();
+      }
     }
 
     /**
@@ -28,21 +56,194 @@ public class Usuarios extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        LBLusuario = new javax.swing.JLabel();
+        txtUsuario = new javax.swing.JTextField();
+        LBLcontraseña = new javax.swing.JLabel();
+        LBLrol = new javax.swing.JLabel();
+        BTNingresar = new javax.swing.JButton();
+        LBLnombre = new javax.swing.JLabel();
+        BTNregistrar = new javax.swing.JButton();
+        txtNombre = new javax.swing.JTextField();
+        txtContraseña = new javax.swing.JTextField();
+        CBrol = new javax.swing.JComboBox<>();
+
+        jTextField1.setText("jTextField1");
+
+        jButton1.setText("jButton1");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        LBLusuario.setText("Usuario");
+
+        txtUsuario.setText(" ");
+
+        LBLcontraseña.setText("Contraseña");
+
+        LBLrol.setText("Rol");
+
+        BTNingresar.setText("Ingresar");
+        BTNingresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNingresarActionPerformed(evt);
+            }
+        });
+
+        LBLnombre.setText("Nombre Usuario");
+
+        BTNregistrar.setText("Registrar");
+        BTNregistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNregistrarActionPerformed(evt);
+            }
+        });
+
+        txtNombre.setText(" ");
+
+        txtContraseña.setText(" ");
+
+        CBrol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", "mesero", "cajero" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(128, 128, 128)
+                .addComponent(LBLnombre)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtNombre)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLcontraseña)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(BTNingresar)
+                                .addGap(43, 43, 43)
+                                .addComponent(BTNregistrar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtContraseña)))
+                        .addGap(23, 23, 23))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLusuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtUsuario)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LBLrol)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(LBLrol)
+                    .addComponent(LBLusuario)
+                    .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLcontraseña)
+                    .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BTNingresar)
+                    .addComponent(BTNregistrar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LBLnombre)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BTNingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNingresarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String usuario = txtUsuario.getText().trim();
+            String contraseña = txtContraseña.getText().trim();
+            String rol = (String) CBrol.getSelectedItem();
+            String admin = "admin";
+            String claveAdmin = "admin";
+            String rolAdmin = "administrador";
+          
+            if (usuario.equals(admin) && contraseña.equals(claveAdmin) && rol.equals(rolAdmin)) {
+                JOptionPane.showMessageDialog(this, "Bienvenido Administrador");
+                new LoginAdmin().setVisible(true);
+            }
+
+            String qry = "SELECT * FROM marinasrestaurant.usuarios WHERE nombre_usuario =? AND clave =? AND rol =?";
+
+                try (PreparedStatement ps = con.prepareStatement(qry)) {
+                    ps.setString(1, usuario);
+                    ps.setString(2, contraseña);
+                    ps.setString(3, rol);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String nombreCompleto = rs.getString("nombre_completo");
+                        txtNombre.setText(nombreCompleto);
+                        if(rol.equals("mesero")){
+                        new Empleados().setVisible(true);
+                        }
+                        if(rol.equals("cajero")){
+                        new Empleados().setVisible(true);
+                        if(rol.equals("adminsitrador")){
+                        new LoginAdmin().setVisible(true);
+                        }
+                        }else{
+                        JOptionPane.showMessageDialog(this, "Hubo un error en el usuario.");
+                        }
+                        
+                        JOptionPane.showMessageDialog(this, "Bienvenido " + nombreCompleto);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Usuario, contraseña o rol incorrectos.");
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+      }      
+    }//GEN-LAST:event_BTNingresarActionPerformed
+
+    private void BTNregistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNregistrarActionPerformed
+        // TODO add your handling code here:
+        try{
+            String usuario = txtUsuario.getText().trim();
+            String contraseña = txtContraseña.getText().trim();
+            String rol = (String) CBrol.getSelectedItem();
+            String nombre = txtNombre.getText().trim();
+            
+            String qry = "INSERT INTO marinasrestaurant.usuarios(nombre_usuario, clave, rol, nombre_completo)"
+                    +" VALUES (?, ?, ?, ?)";
+
+            PreparedStatement ps = con.prepareStatement(qry);
+            ps.setString(1, usuario);
+            ps.setString(2, contraseña);
+            ps.setString(3, rol);
+            ps.setString(4, nombre);
+
+            int filasInsertadas = ps.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Total de registros insertados "+filasInsertadas);
+            ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }       
+    }//GEN-LAST:event_BTNregistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -70,5 +271,17 @@ public class Usuarios extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTNingresar;
+    private javax.swing.JButton BTNregistrar;
+    private javax.swing.JComboBox<String> CBrol;
+    private javax.swing.JLabel LBLcontraseña;
+    private javax.swing.JLabel LBLnombre;
+    private javax.swing.JLabel LBLrol;
+    private javax.swing.JLabel LBLusuario;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField txtContraseña;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 }

@@ -50,7 +50,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="BTNactualizar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="BTNinsertar" min="-2" max="-2" attributes="0"/>
+                      <Component id="BTNeliminar" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="BTNconsultar" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -106,7 +106,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="BTNingresar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BTNactualizar" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="BTNinsertar" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="BTNeliminar" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BTNconsultar" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
@@ -201,15 +201,21 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNactualizarActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="BTNinsertar">
+    <Component class="javax.swing.JButton" name="BTNeliminar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Insertar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNeliminarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTNconsultar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Consultar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNconsultarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

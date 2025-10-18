@@ -54,7 +54,7 @@ public class Proveedores extends javax.swing.JFrame {
         txtTelefonoContacto = new javax.swing.JTextField();
         BTNingresar = new javax.swing.JButton();
         BTNactualizar = new javax.swing.JButton();
-        BTNinsertar = new javax.swing.JButton();
+        BTNeliminar = new javax.swing.JButton();
         BTNconsultar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -101,9 +101,19 @@ public class Proveedores extends javax.swing.JFrame {
             }
         });
 
-        BTNinsertar.setText("Insertar");
+        BTNeliminar.setText("Insertar");
+        BTNeliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNeliminarActionPerformed(evt);
+            }
+        });
 
         BTNconsultar.setText("Consultar");
+        BTNconsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNconsultarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -133,7 +143,7 @@ public class Proveedores extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BTNactualizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BTNinsertar)
+                        .addComponent(BTNeliminar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BTNconsultar))
                     .addGroup(layout.createSequentialGroup()
@@ -177,7 +187,7 @@ public class Proveedores extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BTNingresar)
                     .addComponent(BTNactualizar)
-                    .addComponent(BTNinsertar)
+                    .addComponent(BTNeliminar)
                     .addComponent(BTNconsultar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -187,25 +197,62 @@ public class Proveedores extends javax.swing.JFrame {
 
     private void BTNactualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNactualizarActionPerformed
         // TODO add your handling code here:
+    try {
+        String idproveedor = txtIdProveedor.getText();
+        String nombre = txtNombreProveedor.getText();
+        String nit = txtNit.getText();
+        String nombrecontacto = txtNombreContacto.getText();
+        String direccion = txtDireccion.getText();
+        String telefonoproveedor = txtTelefonoProveedor.getText();
+        String telefonocontacto = txtTelefonoContacto.getText();
+        int id = Integer.parseInt(idproveedor.trim());
 
+        String qry = "UPDATE marinasrestaurant.proveedores SET nombre_proveedor=?, nit=?, nombre_contacto=?, direccion=?, telefono_empresa=?, telefono_contacto=? WHERE proveedor_id = ?";
+
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, nombre);
+        ps.setString(2, nit);
+        ps.setString(3, nombrecontacto);
+        ps.setString(4, direccion);
+        ps.setString(5, telefonoproveedor);
+        ps.setString(6, telefonocontacto);
+        ps.setInt(7, id);
+        
+        int filasActualizadas = ps.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+            } else {
+            JOptionPane.showMessageDialog(null, "No se encontró un proveedor con id " + id);
+            }
+
+        ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }
     }//GEN-LAST:event_BTNactualizarActionPerformed
 
     private void BTNingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNingresarActionPerformed
         // TODO add your handling code here:
         try{
             String nombre = txtNombreProveedor.getText();
-            String telefono = txtTelefono.getText();
-            String correo = txtCorreo.getText();
+            String nit = txtNit.getText();
+            String nombrecontacto = txtNombreContacto.getText();
             String direccion = txtDireccion.getText();
+            String telefonoproveedor = txtTelefonoProveedor.getText();
+            String telefonocontacto = txtTelefonoContacto.getText();
 
-            String qry = "INSERT INTO marinasrestaurant.clientes(nombre, telefono, correo, direccion)"
-                    +" values(?,? ,?, ?)";
+            String qry = "INSERT INTO marinasrestaurant.proveedores(nombre_proveedor, nit, nombre_contacto, direccion, telefono_empresa, telefono_contacto)"
+                    +" values(?, ? ,?, ?, ?, ?)";
 
             PreparedStatement ps = con.prepareStatement(qry);
             ps.setString(1, nombre);
-            ps.setString(2, telefono);
-            ps.setString(3, correo);
+            ps.setString(2, nit);
+            ps.setString(3, nombrecontacto);
             ps.setString(4, direccion);
+            ps.setString(5, telefonoproveedor);
+            ps.setString(6, telefonocontacto);
 
             int filasInsertadas = ps.executeUpdate();
 
@@ -216,6 +263,70 @@ public class Proveedores extends javax.swing.JFrame {
                    e.getMessage();
         }        
     }//GEN-LAST:event_BTNingresarActionPerformed
+
+    private void BTNeliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNeliminarActionPerformed
+        // TODO add your handling code here:
+    try{    
+        String nombre = txtNombreProveedor.getText().trim();
+        
+        String qry = "DELETE FROM marinasrestaurant.proveedores WHERE LOWER(nombre_proveedor) ILIKE LOWER(?)";
+
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, "%" + nombre + "%");
+
+        int filasActualizadas = ps.executeUpdate();
+
+        if (filasActualizadas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+            } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el proveedor " + nombre);
+            }
+        
+        ps.close();
+
+        }catch (SQLException e){
+                   e.getMessage();
+        }        
+    }//GEN-LAST:event_BTNeliminarActionPerformed
+
+    private void BTNconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNconsultarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nombre = txtNombreProveedor.getText().trim();
+            
+            String qry = "SELECT * FROM marinasrestaurant.proveedores WHERE LOWER(nombre_proveedor) ILIKE LOWER(?)";
+
+            try (PreparedStatement ps = con.prepareStatement(qry)) {
+                ps.setString(1, "%" + nombre + "%");
+                
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String nit = rs.getString("nit");
+                        String nombrecontacto = rs.getString("nombre_contacto");
+                        String direccion = rs.getString("direccion");
+                        String telefonoproveedor = rs.getString("telefono_empresa");
+                        String telefonocontacto = rs.getString("telefono_contacto");
+                        String id = rs.getString("proveedor_id");
+                        txtNit.setText(nit);
+                        txtNombreContacto.setText(nombrecontacto);
+                        txtDireccion.setText(direccion);
+                        txtTelefonoProveedor.setText(telefonoproveedor);
+                        txtTelefonoContacto.setText(telefonocontacto);
+                        txtIdProveedor.setText(id);
+                        
+            
+            JOptionPane.showMessageDialog(this, "Registro encontrado");
+            JOptionPane.showMessageDialog(this, nombre);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el proveedor " + nombre);
+                }
+            }
+        }
+
+        } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        }
+    }//GEN-LAST:event_BTNconsultarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -245,8 +356,8 @@ public class Proveedores extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTNactualizar;
     private javax.swing.JButton BTNconsultar;
+    private javax.swing.JButton BTNeliminar;
     private javax.swing.JButton BTNingresar;
-    private javax.swing.JButton BTNinsertar;
     private javax.swing.JLabel LBLdireccion;
     private javax.swing.JLabel LBLidProveedor;
     private javax.swing.JLabel LBLnit;
