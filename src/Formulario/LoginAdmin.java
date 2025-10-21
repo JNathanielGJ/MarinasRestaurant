@@ -34,7 +34,7 @@ public class LoginAdmin extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LBLusuarios.setText("Usuario a editar");
+        LBLusuarios.setText("Ingreso");
 
         CBrol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Mesero", "Cajero" }));
 

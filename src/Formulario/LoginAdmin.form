@@ -51,7 +51,7 @@
   <SubComponents>
     <Component class="javax.swing.JLabel" name="LBLusuarios">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Usuario a editar"/>
+        <Property name="text" type="java.lang.String" value="Ingreso"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="CBrol">
