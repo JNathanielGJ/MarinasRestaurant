@@ -4,11 +4,29 @@
  */
 package Formulario;
 
+import Formulario.Clientes;
+import Formulario.Empleados;
+import Formulario.Pedido;
+import Formulario.Productos;
+import Formulario.Proveedores;
+import Formulario.Usuarios;
+import javax.swing.JOptionPane;
+import Conexion.Conexion;
+import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.sql.Statement;
+import java.sql.ResultSet;
 /**
  *
  * @author TDFM
  */
 public class LoginAdmin extends javax.swing.JFrame {
+    Conexion conexionPostgres = new Conexion();
+    Connection con;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(LoginAdmin.class.getName());
 
@@ -17,6 +35,11 @@ public class LoginAdmin extends javax.swing.JFrame {
      */
     public LoginAdmin() {
         initComponents();
+        try{
+            con = conexionPostgres.getConexion();
+        }catch (SQLException e){
+                   e.getMessage();
+      }        
     }
 
     /**
@@ -31,17 +54,41 @@ public class LoginAdmin extends javax.swing.JFrame {
         LBLusuarios = new javax.swing.JLabel();
         CBrol = new javax.swing.JComboBox<>();
         BTNaceptar = new javax.swing.JButton();
+        BTNventas = new javax.swing.JButton();
+        BTNinventario = new javax.swing.JButton();
+        Salir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LBLusuarios.setText("Ingreso");
+        LBLusuarios.setText("Tipo de acceso");
 
-        CBrol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Administrador", "Mesero", "Cajero" }));
+        CBrol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Clientes", "Empleados", "Proveedores" }));
 
-        BTNaceptar.setText("Aceptar");
+        BTNaceptar.setText("Ingresar");
         BTNaceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BTNaceptarActionPerformed(evt);
+            }
+        });
+
+        BTNventas.setText("Realizar una Venta");
+        BTNventas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNventasActionPerformed(evt);
+            }
+        });
+
+        BTNinventario.setText("Ver inventario");
+        BTNinventario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNinventarioActionPerformed(evt);
+            }
+        });
+
+        Salir.setText("Salir");
+        Salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SalirActionPerformed(evt);
             }
         });
 
@@ -51,12 +98,23 @@ public class LoginAdmin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(LBLusuarios)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(BTNaceptar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Salir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(LBLusuarios)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BTNaceptar))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(BTNventas)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(BTNinventario)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -66,6 +124,12 @@ public class LoginAdmin extends javax.swing.JFrame {
                     .addComponent(LBLusuarios)
                     .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(BTNaceptar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BTNventas)
+                    .addComponent(BTNinventario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(Salir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -74,8 +138,40 @@ public class LoginAdmin extends javax.swing.JFrame {
 
     private void BTNaceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNaceptarActionPerformed
         // TODO add your handling code here:
-
+        String rol = (String) CBrol.getSelectedItem();
+        if(rol.equals("Clientes")){
+        new Clientes().setVisible(true);
+        }
+        if(rol.equals("Empleados")){
+        new Empleados().setVisible(true);
+        }
+        if(rol.equals("Proveedores")){
+        new Proveedores().setVisible(true);
+        }
     }//GEN-LAST:event_BTNaceptarActionPerformed
+
+    private void BTNventasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNventasActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Pedido().setVisible(true);
+            }
+        });         
+    }//GEN-LAST:event_BTNventasActionPerformed
+
+    private void SalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SalirActionPerformed
+        // TODO add your handling code here:
+        System.exit(0);
+    }//GEN-LAST:event_SalirActionPerformed
+
+    private void BTNinventarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNinventarioActionPerformed
+        // TODO add your handling code here:
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Productos().setVisible(true);
+            }
+        });
+    }//GEN-LAST:event_BTNinventarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -104,7 +200,10 @@ public class LoginAdmin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTNaceptar;
+    private javax.swing.JButton BTNinventario;
+    private javax.swing.JButton BTNventas;
     private javax.swing.JComboBox<String> CBrol;
     private javax.swing.JLabel LBLusuarios;
+    private javax.swing.JButton Salir;
     // End of variables declaration//GEN-END:variables
 }

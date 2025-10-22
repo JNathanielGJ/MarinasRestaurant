@@ -58,6 +58,7 @@ public class Usuarios extends javax.swing.JFrame {
 
         jTextField1 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jPasswordField1 = new javax.swing.JPasswordField();
         LBLusuario = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
         LBLcontraseña = new javax.swing.JLabel();
@@ -66,12 +67,14 @@ public class Usuarios extends javax.swing.JFrame {
         LBLnombre = new javax.swing.JLabel();
         BTNregistrar = new javax.swing.JButton();
         txtNombre = new javax.swing.JTextField();
-        txtContraseña = new javax.swing.JTextField();
         CBrol = new javax.swing.JComboBox<>();
+        txtContraseña = new javax.swing.JPasswordField();
 
         jTextField1.setText("jTextField1");
 
         jButton1.setText("jButton1");
+
+        jPasswordField1.setText("jPasswordField1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,8 +104,6 @@ public class Usuarios extends javax.swing.JFrame {
 
         txtNombre.setText(" ");
 
-        txtContraseña.setText(" ");
-
         CBrol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "administrador", "mesero", "cajero" }));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -116,22 +117,17 @@ public class Usuarios extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtNombre)
-                        .addContainerGap())
+                    .addComponent(txtNombre)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(LBLcontraseña)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
                                 .addComponent(BTNingresar)
                                 .addGap(43, 43, 43)
-                                .addComponent(BTNregistrar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtContraseña)))
-                        .addGap(23, 23, 23))
+                                .addComponent(BTNregistrar))
+                            .addComponent(txtContraseña, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 41, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(LBLusuario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -139,8 +135,8 @@ public class Usuarios extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(LBLrol)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())))
+                        .addComponent(CBrol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -182,6 +178,8 @@ public class Usuarios extends javax.swing.JFrame {
             if (usuario.equals(admin) && contraseña.equals(claveAdmin) && rol.equals(rolAdmin)) {
                 JOptionPane.showMessageDialog(this, "Bienvenido Administrador");
                 new LoginAdmin().setVisible(true);
+            }else{
+                JOptionPane.showMessageDialog(this, "Hubo un error en el usuario.");
             }
 
             String qry = "SELECT * FROM marinasrestaurant.usuarios WHERE nombre_usuario =? AND clave =? AND rol =?";
@@ -208,8 +206,6 @@ public class Usuarios extends javax.swing.JFrame {
                         }
                         
                         JOptionPane.showMessageDialog(this, "Bienvenido " + nombreCompleto);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Usuario, contraseña o rol incorrectos.");
                     }
                 }
             }
@@ -279,8 +275,9 @@ public class Usuarios extends javax.swing.JFrame {
     private javax.swing.JLabel LBLrol;
     private javax.swing.JLabel LBLusuario;
     private javax.swing.JButton jButton1;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField txtContraseña;
+    private javax.swing.JPasswordField txtContraseña;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
