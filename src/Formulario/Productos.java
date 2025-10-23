@@ -4,6 +4,14 @@
  */
 package Formulario;
 
+import Conexion.Conexion;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import java.util.logging.Level;
+
 /**
  *
  * @author TDFM
@@ -17,6 +25,7 @@ public class Productos extends javax.swing.JFrame {
      */
     public Productos() {
         initComponents();
+        initializeDatabaseConnection();
     }
 
     /**
@@ -80,6 +89,11 @@ public class Productos extends javax.swing.JFrame {
         txtNombreProducto.setText(" ");
 
         BTNalta.setText("Alta");
+        BTNalta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNaltaActionPerformed(evt);
+            }
+        });
 
         BTNbaja.setText("Baja");
 
@@ -205,6 +219,72 @@ public class Productos extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_CerrarActionPerformed
+
+    private transient Connection con;
+
+    private void initializeDatabaseConnection() {
+        try {
+            Conexion cx = new Conexion();
+            con = cx.getConexion();
+        } catch (SQLException ex) {
+            logger.log(Level.SEVERE, "No se pudo establecer conexión a la BD", ex);
+            JOptionPane.showMessageDialog(this, "Error de conexión a la BD: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void BTNaltaActionPerformed(java.awt.event.ActionEvent evt) {
+        if (con == null) {
+            JOptionPane.showMessageDialog(this, "Sin conexión a la BD", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            String nombreProducto = txtNombreProducto.getText();
+            String categoria = (String) jComboBox1.getSelectedItem();
+            String precioTxt = txtPrecio.getText();
+            String disponibilidadcb = (String) CBdisponibilidad.getSelectedItem();
+            String stockTxt = txtStock.getText();
+            String estadocb = (String) jComboBox2.getSelectedItem();
+
+            boolean disponibilidad = disponibilidadcb != null && disponibilidadcb.equalsIgnoreCase("Disponible");
+            boolean estado = estadocb != null && estadocb.equalsIgnoreCase("Listo para entrega");
+
+            double precio = Double.parseDouble(precioTxt.trim());
+            int stock = Integer.parseInt(stockTxt.trim());
+
+            // Insertar/obtener categoria
+            String sqlCategoria = "INSERT INTO marinasrestaurant.categorias (nombre_categoria) VALUES (?) ON CONFLICT (nombre_categoria) DO UPDATE SET nombre_categoria = EXCLUDED.nombre_categoria RETURNING categoria_id";
+            PreparedStatement psCategoria = con.prepareStatement(sqlCategoria);
+            psCategoria.setString(1, categoria);
+            ResultSet rsCategoria = psCategoria.executeQuery();
+            int categoriaId = 0;
+            if (rsCategoria.next()) {
+                categoriaId = rsCategoria.getInt("categoria_id");
+            }
+            rsCategoria.close();
+            psCategoria.close();
+
+            // Insertar producto
+            String sqlProducto = "INSERT INTO marinasrestaurant.productos (nombre_producto, categoria_id, precio, disponibilidad, stock, estado) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement psProducto = con.prepareStatement(sqlProducto);
+            psProducto.setString(1, nombreProducto);
+            psProducto.setInt(2, categoriaId);
+            psProducto.setDouble(3, precio);
+            psProducto.setBoolean(4, disponibilidad);
+            psProducto.setInt(5, stock);
+            psProducto.setBoolean(6, estado);
+
+            int filasInsertadas = psProducto.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Total de registros insertados: " + filasInsertadas);
+            psProducto.close();
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error SQL al insertar producto", e);
+            JOptionPane.showMessageDialog(this, "Error SQL: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (NumberFormatException nfe) {
+            JOptionPane.showMessageDialog(this, "Precio o stock con formato inválido", "Validación", JOptionPane.WARNING_MESSAGE);
+        }
+    }
 
     /**
      * @param args the command line arguments

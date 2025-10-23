@@ -38,24 +38,34 @@ public class Conexion{
 
     // Constructor de la clase: se ejecuta al crear un objeto CreateConection
     public Conexion(){
-        // Ruta absoluta del archivo con los parámetros de conexión
-        String path = "C:\\Users\\TDFM\\Documents\\MarinasRestaurant\\src\\Conexion\\db_config.properties";
+        // Intentar cargar desde el classpath primero: /Conexion/db_config.properties
         InputStream in = null;
         try {
-            // Abre el archivo y lo carga dentro del objeto Properties
-            in = Files.newInputStream(Paths.get(path));
+            in = Thread.currentThread().getContextClassLoader().getResourceAsStream("Conexion/db_config.properties");
+            if (in == null) {
+                // Fallback a ruta relativa útil durante desarrollo/ejecución local
+                Path relativePath = Paths.get("src", "Conexion", "db_config.properties");
+                if (Files.exists(relativePath)) {
+                    in = Files.newInputStream(relativePath);
+                }
+            }
+
+            if (in == null) {
+                throw new IOException("No se encontró el archivo de configuración db_config.properties");
+            }
+
             config.load(in);
-            in.close();
-            
         } catch (IOException ex) {
             // Si ocurre un error al leer el archivo, lo imprime en consola
             ex.printStackTrace();
         } finally {
             // Asegura que el archivo se cierre aunque ocurra un error
-            try {
-                in.close();
-            } catch (IOException ex ) {
-                ex.printStackTrace();
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException ex ) {
+                    ex.printStackTrace();
+                }
             }
         }
         // Una vez cargadas las propiedades, se asignan a las variables de la clase
