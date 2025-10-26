@@ -14,26 +14,27 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Statement;
 import java.sql.ResultSet;
+
 /**
  *
  * @author TDFM
  */
-public class Productos extends javax.swing.JFrame {
+public class ProductosCategorias extends javax.swing.JFrame {
     Conexion conexionPostgres = new Conexion();
     Connection con;
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Productos.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ProductosCategorias.class.getName());
 
     /**
-     * Creates new form Categoría_Productos
+     * Creates new form ProductosCategorias
      */
-    public Productos() {
+    public ProductosCategorias() {
         initComponents();
         try{
             con = conexionPostgres.getConexion();
         }catch (SQLException e){
                    e.getMessage();
-      }
+      }        
     }
 
     /**
@@ -46,36 +47,42 @@ public class Productos extends javax.swing.JFrame {
     private void initComponents() {
 
         LBLid = new javax.swing.JLabel();
+        txtIdProductos = new javax.swing.JTextField();
         LBLnombreProducto = new javax.swing.JLabel();
+        txtNombreProducto = new javax.swing.JTextField();
         LBLcategoria = new javax.swing.JLabel();
         LBLprecio = new javax.swing.JLabel();
+        txtPrecio = new javax.swing.JTextField();
         LBLdisponibilidad = new javax.swing.JLabel();
         CBdisponibilidad = new javax.swing.JComboBox<>();
         LBLstock = new javax.swing.JLabel();
         txtStock = new javax.swing.JTextField();
-        txtNombreProducto = new javax.swing.JTextField();
+        LBLestado = new javax.swing.JLabel();
+        CBestado = new javax.swing.JComboBox<>();
         BTNalta = new javax.swing.JButton();
         BTNbaja = new javax.swing.JButton();
         BTNmodificar = new javax.swing.JButton();
         BTNconsultar = new javax.swing.JButton();
         Cerrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        CBestado = new javax.swing.JComboBox<>();
-        txtPrecio = new javax.swing.JTextField();
-        jLabel2 = new javax.swing.JLabel();
-        txtIdCategoria = new javax.swing.JTextField();
-        txtIdProductos = new javax.swing.JTextField();
+        txtCategoriaId = new javax.swing.JTextField();
         CBcategoria = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        LBLid.setText(" ID Productos");
+        LBLid.setText("Id Producto");
 
-        LBLnombreProducto.setText("Nombre Producto");
+        txtIdProductos.setText(" ");
 
-        LBLcategoria.setText("Categoría");
+        LBLnombreProducto.setText("Nombre");
+
+        txtNombreProducto.setText(" ");
+
+        LBLcategoria.setText("Categoria");
 
         LBLprecio.setText("Precio");
+
+        txtPrecio.setText(" ");
 
         LBLdisponibilidad.setText("Disponibilidad");
 
@@ -85,7 +92,9 @@ public class Productos extends javax.swing.JFrame {
 
         txtStock.setText(" ");
 
-        txtNombreProducto.setText(" ");
+        LBLestado.setText("Estado");
+
+        CBestado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Listo", "Procesando" }));
 
         BTNalta.setText("Alta");
         BTNalta.addActionListener(new java.awt.event.ActionListener() {
@@ -99,11 +108,6 @@ public class Productos extends javax.swing.JFrame {
         BTNmodificar.setText("Modificar");
 
         BTNconsultar.setText("Consultar");
-        BTNconsultar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BTNconsultarActionPerformed(evt);
-            }
-        });
 
         Cerrar.setText("Cerrar");
         Cerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -112,15 +116,7 @@ public class Productos extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Estado");
-
-        CBestado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Listo para entrega", "En espera" }));
-
-        jLabel2.setText("ID Categorías");
-
-        txtIdCategoria.setText(" ");
-
-        CBcategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Prueba", "intento1" }));
+        jLabel1.setText("Id Categoria");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -130,6 +126,38 @@ public class Productos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLcategoria)
+                        .addGap(2, 2, 2)
+                        .addComponent(CBcategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(LBLprecio)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtPrecio))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLdisponibilidad)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CBdisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LBLstock)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtStock))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLid)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtIdProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(LBLnombreProducto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtNombreProducto))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LBLestado)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(CBestado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtCategoriaId))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(BTNalta)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -137,45 +165,11 @@ public class Productos extends javax.swing.JFrame {
                                 .addComponent(BTNbaja)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(BTNmodificar))
-                            .addComponent(Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(Cerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BTNconsultar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(CBestado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(LBLid)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIdProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtIdCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addComponent(LBLnombreProducto)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(txtNombreProducto))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(LBLcategoria)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(CBcategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(LBLprecio))
-                                .addGroup(layout.createSequentialGroup()
-                                    .addComponent(LBLdisponibilidad)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(CBdisponibilidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(LBLstock)))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(txtStock)
-                                .addComponent(txtPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(BTNconsultar)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -183,11 +177,7 @@ public class Productos extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LBLid)
-                    .addComponent(jLabel2)
-                    .addComponent(txtIdCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtIdProductos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LBLnombreProducto)
                     .addComponent(txtNombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -204,8 +194,10 @@ public class Productos extends javax.swing.JFrame {
                     .addComponent(txtStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBLestado)
                     .addComponent(CBestado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(txtCategoriaId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BTNalta)
@@ -213,67 +205,87 @@ public class Productos extends javax.swing.JFrame {
                     .addComponent(BTNmodificar)
                     .addComponent(BTNconsultar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(Cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BTNconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNconsultarActionPerformed
+    private void BTNaltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNaltaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_BTNconsultarActionPerformed
+    try {
+        String nombreProducto = txtNombreProducto.getText().trim();
+        String categoria = (String) CBcategoria.getSelectedItem();
+        String precioTxt = txtPrecio.getText().trim();
+        String disponibilidadcb = (String) CBdisponibilidad.getSelectedItem();
+        String stockTxt = txtStock.getText().trim();
+        String estadocb = (String) CBestado.getSelectedItem();
+        boolean disponibilidad = disponibilidadcb.equalsIgnoreCase("Disponible");
+        boolean estado = estadocb.equalsIgnoreCase("Listo para entrega");
+        double precio = Double.parseDouble(precioTxt);
+        int stock = Integer.parseInt(stockTxt);
+        int categoriaId = 0;
+        
+        String qryBox = "SELECT nombre_categoria FROM marinasrestaurant.categorias ORDER BY categoria_id DESC LIMIT 1";
+        PreparedStatement psBox = con.prepareStatement(qryBox);
+        ResultSet rsBox = psBox.executeQuery();
+        if (rsBox.next()) {
+            String categoriaCB = rsBox.getString("nombre_categoria");
+            CBcategoria.addItem(categoriaCB);
+            CBcategoria.setSelectedItem(categoriaCB);
+        }
+        rsBox.close();
+        psBox.close();
+        
+        String qryCheck = "SELECT categoria_id FROM marinasrestaurant.categorias WHERE nombre_categoria = ?";
+        PreparedStatement psCheck = con.prepareStatement(qryCheck);
+        psCheck.setString(1, categoria);
+        ResultSet rsCheck = psCheck.executeQuery();
+
+        if (rsCheck.next()) {
+            categoriaId = rsCheck.getInt("categoria_id");
+        } else {
+            String qryCategoria = "INSERT INTO marinasrestaurant.categorias (nombre_categoria) VALUES (?) RETURNING categoria_id";
+            PreparedStatement psCategoria = con.prepareStatement(qryCategoria);
+            psCategoria.setString(1, categoria);
+            ResultSet rs = psCategoria.executeQuery();
+            if (rs.next()) {
+                categoriaId = rs.getInt("categoria_id");
+            }
+            rs.close();
+            psCategoria.close();
+        }
+        rsCheck.close();
+        psCheck.close();
+        
+        String qryProducto = "INSERT INTO marinasrestaurant.productos (nombre_producto, categoria_id, precio, disponibilidad, stock, estado)"
+                           + " VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement psProducto = con.prepareStatement(qryProducto);
+        psProducto.setString(1, nombreProducto);
+        psProducto.setInt(2, categoriaId);
+        psProducto.setDouble(3, precio);
+        psProducto.setBoolean(4, disponibilidad);
+        psProducto.setInt(5, stock);
+        psProducto.setBoolean(6, estado);
+
+        int filasInsertadas = psProducto.executeUpdate();
+        JOptionPane.showMessageDialog(null, "Total de registros insertados: " + filasInsertadas);
+
+        psProducto.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error en formato numérico: " + e.getMessage());
+        }
+    }//GEN-LAST:event_BTNaltaActionPerformed
 
     private void CerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CerrarActionPerformed
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_CerrarActionPerformed
 
-    private void BTNaltaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNaltaActionPerformed
-        // TODO add your handling code here:  
-        try{
-            String nombreProducto = txtNombreProducto.getText();
-            String categoria = (String)CBcategoria.getSelectedItem();
-            String precioTxt = txtPrecio.getText().trim();
-            String disponibilidadcb = (String)CBdisponibilidad.getSelectedItem();
-            String stockTxt = txtStock.getText().trim();
-            String estadocb = (String)CBestado.getSelectedItem();
-            boolean disponibilidad = disponibilidadcb.equalsIgnoreCase("Disponible");
-            boolean estado = estadocb.equalsIgnoreCase("Listo para entrega");
-            double precio = Double.parseDouble(precioTxt.trim());
-            int stock = Integer.parseInt(stockTxt.trim());   
-			
-            String qryCategoria = "INSERT INTO marinasrestaurant.categorias (nombre_categoria) VALUES (?) RETURNING categoria_id";
-            PreparedStatement psCategoria = con.prepareStatement(qryCategoria);
-            psCategoria.setString(1, categoria);
-            
-            ResultSet rs = psCategoria.executeQuery();
-            int categoriaId = 0;
-            if (rs.next()) {
-                categoriaId = rs.getInt("categoria_id");
-            }
-            rs.close();
-            psCategoria.close(); 
-
-          String qryProducto = "INSERT INTO marinasrestaurant.productos (nombre_producto, categoria_id, precio, disponibilidad, stock, estado)"
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement psProducto = con.prepareStatement(qryProducto);
-            psProducto.setString(1, nombreProducto);
-            psProducto.setInt(2, categoriaId);
-            psProducto.setDouble(3, precio);
-            psProducto.setBoolean(4, disponibilidad);
-            psProducto.setInt(5, stock);
-            psProducto.setBoolean(6, estado);
-            
-            int filasInsertadas = psProducto.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Total de registros insertados"+filasInsertadas);
-            psProducto.close();
-            
-        }catch (SQLException e){
-                   e.getMessage();
-      }
-    }//GEN-LAST:event_BTNaltaActionPerformed
- 
     /**
      * @param args the command line arguments
      */
@@ -296,7 +308,7 @@ public class Productos extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new Productos().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> new ProductosCategorias().setVisible(true));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -310,13 +322,13 @@ public class Productos extends javax.swing.JFrame {
     private javax.swing.JButton Cerrar;
     private javax.swing.JLabel LBLcategoria;
     private javax.swing.JLabel LBLdisponibilidad;
+    private javax.swing.JLabel LBLestado;
     private javax.swing.JLabel LBLid;
     private javax.swing.JLabel LBLnombreProducto;
     private javax.swing.JLabel LBLprecio;
     private javax.swing.JLabel LBLstock;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JTextField txtIdCategoria;
+    private javax.swing.JTextField txtCategoriaId;
     private javax.swing.JTextField txtIdProductos;
     private javax.swing.JTextField txtNombreProducto;
     private javax.swing.JTextField txtPrecio;
