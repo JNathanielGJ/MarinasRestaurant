@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Formulario;
 
 import javax.swing.JOptionPane;
@@ -14,19 +10,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.sql.Statement;
 import java.sql.ResultSet;
-/**
- *
- * @author TDFM
- */
+
 public class Productos extends javax.swing.JFrame {
     Conexion conexionPostgres = new Conexion();
     Connection con;
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Productos.class.getName());
 
-    /**
-     * Creates new form Categoría_Productos
-     */
     public Productos() {
         initComponents();
         try{

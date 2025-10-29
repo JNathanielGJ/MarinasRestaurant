@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package Formulario;
 
 import javax.swing.JOptionPane;
@@ -25,12 +21,10 @@ import net.sf.jasperreports.view.JasperViewer;
 public class Pedido extends javax.swing.JFrame {
     Conexion conexionPostgres = new Conexion();
     Connection con;
+
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Pedido.class.getName());
 
-    /**
-     * Creates new form Pedido
-     */
     public Pedido() {
         initComponents();
         try{
@@ -51,24 +45,24 @@ public class Pedido extends javax.swing.JFrame {
 
         BTNgenerarFactura = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        JTproductos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        LBLtipografia = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        LBLnit = new javax.swing.JLabel();
+        LBLdireccionEmpresa = new javax.swing.JLabel();
+        LBLleyenda = new javax.swing.JLabel();
+        LBLcliente = new javax.swing.JLabel();
         txtCliente = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txtNit = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
+        LBLtelefono = new javax.swing.JLabel();
+        txtTelefono = new javax.swing.JTextField();
+        LBLdireccion = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         Cerrar = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        BTNagregarProducto = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jLabel9 = new javax.swing.JLabel();
+        LBLfacturaNo = new javax.swing.JLabel();
         txtFacturaNo = new javax.swing.JTextField();
         BTNbuscar = new javax.swing.JButton();
 
@@ -81,7 +75,7 @@ public class Pedido extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        JTproductos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -98,22 +92,27 @@ public class Pedido extends javax.swing.JFrame {
                 "ID", "Descripción", "Cantidad", "Precio Unitario", "Total"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        JTproductos.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                JTproductosKeyReleased(evt);
+            }
+        });
+        jScrollPane1.setViewportView(JTproductos);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel1.setBackground(new java.awt.Color(51, 51, 255));
-        jLabel1.setFont(new java.awt.Font("Wide Latin", 3, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel1.setText("Marinas Restraurant");
-        jLabel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        LBLtipografia.setBackground(new java.awt.Color(51, 51, 255));
+        LBLtipografia.setFont(new java.awt.Font("Wide Latin", 3, 24)); // NOI18N
+        LBLtipografia.setForeground(new java.awt.Color(0, 153, 153));
+        LBLtipografia.setText("Marinas Restraurant");
+        LBLtipografia.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel3.setText("NIT: 3169315-0");
+        LBLnit.setText("NIT: 3169315-0");
 
-        jLabel4.setText("Cañas Viejas, San Jerónimo, Baja Verapaz");
+        LBLdireccionEmpresa.setText("Cañas Viejas, San Jerónimo, Baja Verapaz");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
-        jLabel5.setText("\"Los mejores en mariscos\"");
+        LBLleyenda.setFont(new java.awt.Font("Segoe UI", 2, 14)); // NOI18N
+        LBLleyenda.setText("\"Los mejores en mariscos\"");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -122,17 +121,17 @@ public class Pedido extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                    .addComponent(LBLtipografia)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(84, 84, 84)
                         .addComponent(jLabel2)
                         .addGap(102, 102, 102)
-                        .addComponent(jLabel3))
+                        .addComponent(LBLnit))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(119, 119, 119)
-                        .addComponent(jLabel4))
+                        .addComponent(LBLdireccionEmpresa))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(LBLleyenda)
                         .addGap(141, 141, 141)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -140,27 +139,27 @@ public class Pedido extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(LBLtipografia)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LBLnit)
+                    .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel4)
+                .addComponent(LBLdireccionEmpresa)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel5)
+                .addComponent(LBLleyenda)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
 
-        jLabel6.setText("Cliente:");
+        LBLcliente.setText("Cliente:");
 
         txtCliente.setText(" ");
 
-        jLabel7.setText("NIT:");
+        LBLtelefono.setText("Tel:");
 
-        txtNit.setText(" ");
+        txtTelefono.setText(" ");
 
-        jLabel8.setText("Dirección:");
+        LBLdireccion.setText("Dirección:");
 
         txtDireccion.setText(" ");
 
@@ -171,13 +170,18 @@ public class Pedido extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Agregar Producto");
+        BTNagregarProducto.setText("Agregar Producto");
+        BTNagregarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNagregarProductoActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Eliminar Producto");
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
-        jLabel9.setText("Factura No.");
+        LBLfacturaNo.setText("Factura No.");
 
         txtFacturaNo.setText(" ");
 
@@ -187,7 +191,7 @@ public class Pedido extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel9)
+                .addComponent(LBLfacturaNo)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtFacturaNo)
                 .addContainerGap())
@@ -197,12 +201,17 @@ public class Pedido extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
+                    .addComponent(LBLfacturaNo)
                     .addComponent(txtFacturaNo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         BTNbuscar.setText("Buscar");
+        BTNbuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNbuscarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -217,7 +226,7 @@ public class Pedido extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Cerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BTNagregarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BTNgenerarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
@@ -226,17 +235,17 @@ public class Pedido extends javax.swing.JFrame {
                                 .addGap(6, 6, 6)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
+                                        .addComponent(LBLcliente)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(BTNbuscar))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
+                                        .addComponent(LBLtelefono)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(txtNit, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel8)
+                                        .addComponent(LBLdireccion)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(txtDireccion)))))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -252,20 +261,20 @@ public class Pedido extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
+                            .addComponent(LBLcliente)
                             .addComponent(txtCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(BTNbuscar))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(txtNit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8)
+                            .addComponent(LBLtelefono)
+                            .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(LBLdireccion)
                             .addComponent(txtDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(BTNagregarProducto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -299,6 +308,169 @@ public class Pedido extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_CerrarActionPerformed
 
+    private void BTNbuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNbuscarActionPerformed
+        // TODO add your handling code here:
+        try {
+            String nombre = txtCliente.getText().trim();
+            
+            String qry = "SELECT * FROM marinasrestaurant.clientes WHERE LOWER(nombre) ILIKE LOWER(?)";
+
+            try (PreparedStatement ps = con.prepareStatement(qry)) {
+                ps.setString(1, "%" + nombre + "%");
+                
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String telefono = rs.getString("telefono");
+                        String direccion = rs.getString("direccion");
+                        txtTelefono.setText(telefono);
+                        txtDireccion.setText(direccion);
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el cliente " + nombre);
+                }
+            }
+        }
+            } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            }        
+    }//GEN-LAST:event_BTNbuscarActionPerformed
+
+    private void BTNagregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNagregarProductoActionPerformed
+        // TODO add your handling code here:
+    try {
+        // 🔹 Asegurar conexión válida y autocommit activado
+        if (con == null || con.isClosed()) {
+            Conexion conexionPostgres = new Conexion();
+            con = conexionPostgres.getConexion();
+        }
+        con.setAutoCommit(true);
+
+        // 🔹 Buscar el ID del cliente según el nombre ingresado
+        String nombreCliente = txtCliente.getText().trim();
+        int clienteId = 0;
+
+        String qryCliente = "SELECT cliente_id FROM marinasrestaurant.clientes WHERE LOWER(nombre) ILIKE LOWER(?)";
+        PreparedStatement psCliente = con.prepareStatement(qryCliente);
+        psCliente.setString(1, "%" + nombreCliente + "%");
+        ResultSet rsCliente = psCliente.executeQuery();
+
+        if (rsCliente.next()) {
+            clienteId = rsCliente.getInt("cliente_id");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el cliente: " + nombreCliente);
+            rsCliente.close();
+            psCliente.close();
+            return;
+        }
+        rsCliente.close();
+        psCliente.close();
+
+        // 🔹 Calcular total general de la factura
+        int empleadoId = 1; // cambia este ID según tu lógica
+        double totalFactura = 0;
+
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) JTproductos.getModel();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            if (modelo.getValueAt(i, 4) != null) {
+                totalFactura += Double.parseDouble(modelo.getValueAt(i, 4).toString());
+            }
+        }
+
+        String sqlFactura = "INSERT INTO marinasrestaurant.facturas (cliente_id, empleado_id, total) VALUES (?, ?, ?) RETURNING factura_id";
+        PreparedStatement psFactura = con.prepareStatement(sqlFactura);
+        psFactura.setInt(1, clienteId);
+        psFactura.setInt(2, empleadoId);
+        psFactura.setDouble(3, totalFactura);
+
+        ResultSet rs = psFactura.executeQuery();
+        int facturaId = 0;
+        if (rs.next()) {
+            facturaId = rs.getInt("factura_id");
+        }
+        rs.close();
+        psFactura.close();
+
+        if (facturaId == 0) {
+            JOptionPane.showMessageDialog(null, "No se pudo generar la factura. Verifica la conexión o la tabla.");
+            return;
+        }
+
+        String sqlDetalle = "INSERT INTO marinasrestaurant.detalle_factura (factura_id, producto_id, cantidad, precio_unitario) VALUES (?, ?, ?, ?)";
+        PreparedStatement psDetalle = con.prepareStatement(sqlDetalle);
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            if (modelo.getValueAt(i, 0) == null) continue;
+
+            int productoId = Integer.parseInt(modelo.getValueAt(i, 0).toString());
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 2).toString());
+            double precio = Double.parseDouble(modelo.getValueAt(i, 3).toString());
+
+            psDetalle.setInt(1, facturaId);
+            psDetalle.setInt(2, productoId);
+            psDetalle.setInt(3, cantidad);
+            psDetalle.setDouble(4, precio);
+            psDetalle.addBatch();
+        }
+        psDetalle.executeBatch();
+        psDetalle.close();
+
+        JOptionPane.showMessageDialog(null, "✅ Factura generada exitosamente (ID: " + facturaId + ")");
+        modelo.setRowCount(0); // limpiar la tabla
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "❌ Error SQL al generar factura:\n" + e.getMessage());
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "⚠️ Error de formato en los datos:\n" + e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "⚠️ Error inesperado:\n" + e.getMessage());
+            }
+    }//GEN-LAST:event_BTNagregarProductoActionPerformed
+
+    private void JTproductosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTproductosKeyReleased
+        // TODO add your handling code here:
+    int fila = JTproductos.getSelectedRow();
+    int columna = JTproductos.getSelectedColumn();
+
+    // Solo reaccionar si se edita la columna de ID (columna 0)
+    if (columna == 0 && fila >= 0) {
+        try {
+            Object valor = JTproductos.getValueAt(fila, 0);
+            if (valor == null) return;
+            int idProducto = Integer.parseInt(valor.toString().trim());
+
+            String qry = "SELECT nombre_producto, precio FROM marinasrestaurant.productos WHERE producto_id = ?";
+            PreparedStatement ps = con.prepareStatement(qry);
+            ps.setInt(1, idProducto);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String descripcion = rs.getString("nombre_producto");
+                double precio = rs.getDouble("precio");
+
+                JTproductos.setValueAt(descripcion, fila, 1);
+                JTproductos.setValueAt(precio, fila, 3);
+            } else {
+                JTproductos.setValueAt("No encontrado", fila, 1);
+                JTproductos.setValueAt(null, fila, 3);
+            }
+            rs.close();
+            ps.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar producto: " + e.getMessage());
+        }
+    }
+
+    if (columna == 2 && fila >= 0) {
+        try {
+            int cantidad = Integer.parseInt(JTproductos.getValueAt(fila, 2).toString());
+            double precio = Double.parseDouble(JTproductos.getValueAt(fila, 3).toString());
+            double total = cantidad * precio;
+            JTproductos.setValueAt(total, fila, 4);
+            } catch (Exception e) {
+          }
+        }        
+    }//GEN-LAST:event_JTproductosKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -325,27 +497,27 @@ public class Pedido extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BTNagregarProducto;
     private javax.swing.JButton BTNbuscar;
     private javax.swing.JButton BTNgenerarFactura;
     private javax.swing.JButton Cerrar;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTable JTproductos;
+    private javax.swing.JLabel LBLcliente;
+    private javax.swing.JLabel LBLdireccion;
+    private javax.swing.JLabel LBLdireccionEmpresa;
+    private javax.swing.JLabel LBLfacturaNo;
+    private javax.swing.JLabel LBLleyenda;
+    private javax.swing.JLabel LBLnit;
+    private javax.swing.JLabel LBLtelefono;
+    private javax.swing.JLabel LBLtipografia;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField txtCliente;
     private javax.swing.JTextField txtDireccion;
     private javax.swing.JTextField txtFacturaNo;
-    private javax.swing.JTextField txtNit;
+    private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
