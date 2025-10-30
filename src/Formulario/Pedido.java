@@ -60,7 +60,7 @@ public class Pedido extends javax.swing.JFrame {
         txtDireccion = new javax.swing.JTextField();
         Cerrar = new javax.swing.JButton();
         BTNagregarProducto = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        BTNeliminarProducto = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         LBLfacturaNo = new javax.swing.JLabel();
         txtFacturaNo = new javax.swing.JTextField();
@@ -177,7 +177,12 @@ public class Pedido extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Eliminar Producto");
+        BTNeliminarProducto.setText("Eliminar Producto");
+        BTNeliminarProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNeliminarProductoActionPerformed(evt);
+            }
+        });
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -225,7 +230,7 @@ public class Pedido extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(Cerrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
+                            .addComponent(BTNeliminarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, 131, Short.MAX_VALUE)
                             .addComponent(BTNagregarProducto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(BTNgenerarFactura, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
@@ -276,7 +281,7 @@ public class Pedido extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(BTNagregarProducto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2)
+                        .addComponent(BTNeliminarProducto)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(BTNgenerarFactura, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -293,7 +298,7 @@ public class Pedido extends javax.swing.JFrame {
         try {
             Class.forName("org.postgresql.Driver");
             try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234")) {
-                String reportPath = "C:\\Users\\TDFM\\JaspersoftWorkspace\\MyReports\\JrEmpleados.jrxml";
+                String reportPath = "C:\\Users\\TDFM\\JaspersoftWorkspace\\MyReports\\JrFacturas.jrxml";
                 JasperReport jr = JasperCompileManager.compileReport(reportPath);
                 JasperPrint jp = JasperFillManager.fillReport(jr, null, con);
                 JasperViewer.viewReport(jp);
@@ -337,14 +342,8 @@ public class Pedido extends javax.swing.JFrame {
     private void BTNagregarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNagregarProductoActionPerformed
         // TODO add your handling code here:
     try {
-        // 🔹 Asegurar conexión válida y autocommit activado
-        if (con == null || con.isClosed()) {
-            Conexion conexionPostgres = new Conexion();
-            con = conexionPostgres.getConexion();
-        }
         con.setAutoCommit(true);
 
-        // 🔹 Buscar el ID del cliente según el nombre ingresado
         String nombreCliente = txtCliente.getText().trim();
         int clienteId = 0;
 
@@ -364,8 +363,7 @@ public class Pedido extends javax.swing.JFrame {
         rsCliente.close();
         psCliente.close();
 
-        // 🔹 Calcular total general de la factura
-        int empleadoId = 1; // cambia este ID según tu lógica
+        int empleadoId = 1;
         double totalFactura = 0;
 
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) JTproductos.getModel();
@@ -408,21 +406,15 @@ public class Pedido extends javax.swing.JFrame {
             psDetalle.setInt(2, productoId);
             psDetalle.setInt(3, cantidad);
             psDetalle.setDouble(4, precio);
-            psDetalle.addBatch();
         }
-        psDetalle.executeBatch();
         psDetalle.close();
 
-        JOptionPane.showMessageDialog(null, "✅ Factura generada exitosamente (ID: " + facturaId + ")");
-        modelo.setRowCount(0); // limpiar la tabla
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "❌ Error SQL al generar factura:\n" + e.getMessage());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "⚠️ Error de formato en los datos:\n" + e.getMessage());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "⚠️ Error inesperado:\n" + e.getMessage());
-            }
+        JOptionPane.showMessageDialog(null, "Factura generada exitosamente (ID: " + facturaId + ")");
+        modelo.setRowCount(0);
+        
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error SQL al generar factura:\n" + e.getMessage());
+        }
     }//GEN-LAST:event_BTNagregarProductoActionPerformed
 
     private void JTproductosKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_JTproductosKeyReleased
@@ -430,7 +422,6 @@ public class Pedido extends javax.swing.JFrame {
     int fila = JTproductos.getSelectedRow();
     int columna = JTproductos.getSelectedColumn();
 
-    // Solo reaccionar si se edita la columna de ID (columna 0)
     if (columna == 0 && fila >= 0) {
         try {
             Object valor = JTproductos.getValueAt(fila, 0);
@@ -455,7 +446,7 @@ public class Pedido extends javax.swing.JFrame {
             rs.close();
             ps.close();
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al buscar producto: " + e.getMessage());
         }
     }
@@ -470,6 +461,27 @@ public class Pedido extends javax.swing.JFrame {
           }
         }        
     }//GEN-LAST:event_JTproductosKeyReleased
+
+    private void BTNeliminarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNeliminarProductoActionPerformed
+        // TODO add your handling code here:
+        javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) JTproductos.getModel();
+        int filaSeleccionada = JTproductos.getSelectedRow();
+
+        if (filaSeleccionada >= 0) {
+            int confirmar = JOptionPane.showConfirmDialog(
+                null,
+                "¿Deseas eliminar este producto de la lista?",
+                "Confirmar eliminación",
+                JOptionPane.YES_NO_OPTION
+            );
+
+            if (confirmar == JOptionPane.YES_OPTION) {
+                modelo.removeRow(filaSeleccionada);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecciona una fila para eliminar.");
+        }
+    }//GEN-LAST:event_BTNeliminarProductoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -499,6 +511,7 @@ public class Pedido extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BTNagregarProducto;
     private javax.swing.JButton BTNbuscar;
+    private javax.swing.JButton BTNeliminarProducto;
     private javax.swing.JButton BTNgenerarFactura;
     private javax.swing.JButton Cerrar;
     private javax.swing.JTable JTproductos;
@@ -510,7 +523,6 @@ public class Pedido extends javax.swing.JFrame {
     private javax.swing.JLabel LBLnit;
     private javax.swing.JLabel LBLtelefono;
     private javax.swing.JLabel LBLtipografia;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

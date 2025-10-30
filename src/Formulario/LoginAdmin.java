@@ -168,7 +168,7 @@ public class LoginAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Productos().setVisible(true);
+                new ProductosCategorias().setVisible(true);
             }
         });
     }//GEN-LAST:event_BTNinventarioActionPerformed

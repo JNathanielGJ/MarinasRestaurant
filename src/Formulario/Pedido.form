@@ -31,7 +31,7 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="Cerrar" max="32767" attributes="0"/>
-                          <Component id="jButton2" pref="131" max="32767" attributes="0"/>
+                          <Component id="BTNeliminarProducto" pref="131" max="32767" attributes="0"/>
                           <Component id="BTNagregarProducto" alignment="0" max="32767" attributes="0"/>
                           <Component id="BTNgenerarFactura" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -97,7 +97,7 @@
                   <Group type="102" alignment="1" attributes="0">
                       <Component id="BTNagregarProducto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                      <Component id="BTNeliminarProducto" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Component id="BTNgenerarFactura" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
@@ -318,10 +318,13 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNagregarProductoActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="BTNeliminarProducto">
       <Properties>
         <Property name="text" type="java.lang.String" value="Eliminar Producto"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNeliminarProductoActionPerformed"/>
+      </Events>
     </Component>
     <Container class="javax.swing.JPanel" name="jPanel2">
       <Properties>
