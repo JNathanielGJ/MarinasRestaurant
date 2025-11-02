@@ -7,7 +7,6 @@ package Formulario;
 import Formulario.Clientes;
 import Formulario.Empleados;
 import Formulario.Pedido;
-import Formulario.Productos;
 import Formulario.Proveedores;
 import Formulario.Usuarios;
 import javax.swing.JOptionPane;
