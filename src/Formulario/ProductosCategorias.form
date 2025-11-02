@@ -221,16 +221,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Baja"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNbajaActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTNmodificar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Modificar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNmodificarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="BTNconsultar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Consultar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BTNconsultarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="Cerrar">
       <Properties>

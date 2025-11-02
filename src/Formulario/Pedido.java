@@ -298,7 +298,7 @@ public class Pedido extends javax.swing.JFrame {
         try {
             Class.forName("org.postgresql.Driver");
             try (Connection con = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "1234")) {
-                String reportPath = "C:\\Users\\TDFM\\JaspersoftWorkspace\\MyReports\\JrFacturas.jrxml";
+                String reportPath = "C:\\Users\\TDFM\\JaspersoftWorkspace\\MyReports\\Facturas.jrxml";
                 JasperReport jr = JasperCompileManager.compileReport(reportPath);
                 JasperPrint jp = JasperFillManager.fillReport(jr, null, con);
                 JasperViewer.viewReport(jp);
@@ -406,6 +406,8 @@ public class Pedido extends javax.swing.JFrame {
             psDetalle.setInt(2, productoId);
             psDetalle.setInt(3, cantidad);
             psDetalle.setDouble(4, precio);
+            
+        psDetalle.executeUpdate();            
         }
         psDetalle.close();
 

@@ -32,11 +32,27 @@ public class ProductosCategorias extends javax.swing.JFrame {
         initComponents();
         try{
             con = conexionPostgres.getConexion();
+            actualizarCategorias();
         }catch (SQLException e){
                    e.getMessage();
       }        
     }
-
+    
+    private void actualizarCategorias() {
+        try {
+            CBcategoria.removeAllItems();
+            String qry = "SELECT nombre_categoria FROM marinasrestaurant.categorias ORDER BY categoria_id ASC";
+            PreparedStatement ps = con.prepareStatement(qry);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                CBcategoria.addItem(rs.getString("nombre_categoria"));
+            }
+            rs.close();
+            ps.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar categorías: " + e.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -104,10 +120,25 @@ public class ProductosCategorias extends javax.swing.JFrame {
         });
 
         BTNbaja.setText("Baja");
+        BTNbaja.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNbajaActionPerformed(evt);
+            }
+        });
 
         BTNmodificar.setText("Modificar");
+        BTNmodificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNmodificarActionPerformed(evt);
+            }
+        });
 
         BTNconsultar.setText("Consultar");
+        BTNconsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BTNconsultarActionPerformed(evt);
+            }
+        });
 
         Cerrar.setText("Cerrar");
         Cerrar.addActionListener(new java.awt.event.ActionListener() {
@@ -273,7 +304,8 @@ public class ProductosCategorias extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Total de registros insertados: " + filasInsertadas);
 
         psProducto.close();
-
+        actualizarCategorias();
+        
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
             } catch (NumberFormatException e) {
@@ -285,6 +317,124 @@ public class ProductosCategorias extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_CerrarActionPerformed
+
+    private void BTNbajaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNbajaActionPerformed
+        // TODO add your handling code here:
+    try {
+        String nombre = txtNombreProducto.getText().trim();
+
+        String qry = "DELETE FROM marinasrestaurant.productos WHERE LOWER(nombre_producto) ILIKE LOWER(?)";
+
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, "%" + nombre + "%");
+
+        int filas = ps.executeUpdate();
+
+        if (filas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro eliminado correctamente");
+            } else {
+                JOptionPane.showMessageDialog(null, "No se encontró el producto " + nombre);
+            }
+        ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error SQL al eliminar: " + e.getMessage());
+        }        
+    }//GEN-LAST:event_BTNbajaActionPerformed
+
+    private void BTNmodificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNmodificarActionPerformed
+        // TODO add your handling code here:
+    try {
+        String idProducto = txtIdProductos.getText().trim();
+        String nombre = txtNombreProducto.getText();
+        String categoria = (String) CBcategoria.getSelectedItem();
+        String precioTxt = txtPrecio.getText();
+        String stockTxt = txtStock.getText();
+        String disponibilidadTxt = (String) CBdisponibilidad.getSelectedItem();
+        String estadoTxt = (String) CBestado.getSelectedItem();
+        int id = Integer.parseInt(idProducto.trim());
+        double precio = Double.parseDouble(precioTxt.trim());
+        int stock = Integer.parseInt(stockTxt.trim());
+        boolean disponibilidad = disponibilidadTxt.equalsIgnoreCase("Disponible");
+        boolean estado = estadoTxt.equalsIgnoreCase("Listo");
+
+        int categoriaId = 0;
+        String qryCategoria = "SELECT categoria_id FROM marinasrestaurant.categorias WHERE nombre_categoria = ?";
+        PreparedStatement psCat = con.prepareStatement(qryCategoria);
+        psCat.setString(1, categoria);
+        ResultSet rsCat = psCat.executeQuery();
+            if (rsCat.next()) {
+                categoriaId = rsCat.getInt("categoria_id");
+            }
+            rsCat.close();
+            psCat.close();
+
+        String qry = "UPDATE marinasrestaurant.productos SET nombre_producto=?, categoria_id=?, precio=?, disponibilidad=?, stock=?, estado=? WHERE producto_id=?";
+
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, nombre);
+        ps.setInt(2, categoriaId);
+        ps.setDouble(3, precio);
+        ps.setBoolean(4, disponibilidad);
+        ps.setInt(5, stock);
+        ps.setBoolean(6, estado);
+        ps.setInt(7, id);
+
+        int filas = ps.executeUpdate();
+
+        if (filas > 0) {
+            JOptionPane.showMessageDialog(null, "Registro actualizado correctamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el producto con ID " + id);
+        }
+        ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error SQL al modificar: " + e.getMessage());
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Error: Verifique los campos numéricos");
+            }
+    }//GEN-LAST:event_BTNmodificarActionPerformed
+
+    private void BTNconsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BTNconsultarActionPerformed
+        // TODO add your handling code here:
+    try {
+        String nombre = txtNombreProducto.getText().trim();
+
+        String qry = "SELECT * FROM marinasrestaurant.productos p JOIN marinasrestaurant.categorias c ON p.categoria_id = c.categoria_id WHERE LOWER(nombre_producto) ILIKE LOWER(?)";
+
+        PreparedStatement ps = con.prepareStatement(qry);
+        ps.setString(1, "%" + nombre + "%");
+
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            String categoria = rs.getString("nombre_categoria");
+            String precio = rs.getString("precio");
+            String disponibilidad = rs.getString("disponibilidad");
+            String stock = rs.getString("stock");
+            String estado = rs.getString("estado");
+            String id = rs.getString("producto_id");
+            String idCategoria = rs.getString("categoria_id");
+            CBcategoria.setSelectedItem(categoria);
+            txtPrecio.setText(precio);
+            txtStock.setText(stock);
+            CBdisponibilidad.setSelectedItem(disponibilidad.equals("t") ? "Disponible" : "Agotado");
+            CBestado.setSelectedItem(estado.equals("t") ? "Listo" : "Procesando");
+            txtIdProductos.setText(id);
+            txtCategoriaId.setText(idCategoria);
+
+            JOptionPane.showMessageDialog(this, "Registro encontrado correctamente");
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró el producto " + nombre);
+        }
+        rs.close();
+        ps.close();
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error SQL: " + e.getMessage());
+        }
+    }//GEN-LAST:event_BTNconsultarActionPerformed
 
     /**
      * @param args the command line arguments
